@@ -6,9 +6,8 @@
 #define INC 9     //Increment (INC) connected to pin 9 on arduino
 #define VW A13    //VW (wiper terminal) connected to analog 13 on arduino
 #define TDI 10    //Time to wait after setting U/D voltage to high to toggle INC
-#define TIL 5     //
-#define TIH 5
-#define TIW 250
+#define TIL 5     //Time to wait after setting INC to low voltage
+#define TIH 5     //time to wait after setting INC to high voltage
 #define BUZZER 13   //Buzzer is connected to pin 13
 #define NOTELENGTH 250  
 #define NUMSENSORS 2
@@ -35,7 +34,7 @@ char setCount(char c){
     digitalWrite(UD, LOW);      //sets U/D to LOW voltage, this allows us to decrease volume when we pulse INC
     delayMicroseconds(TDI);
     while(count > c){
-      digitalWrite(INC, LOW);
+      digitalWrite(INC, LOW);   
       delayMicroseconds(TIL);
       digitalWrite(INC, HIGH);
       delayMicroseconds(TIH);
