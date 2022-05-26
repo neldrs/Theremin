@@ -1,6 +1,6 @@
 #define USPERCM 29        //speed of sound in microseconds to centimeters
 #define CUTOFFDIST 26   //max distance ultrasonic sensor will read is 26cm
-#define TRIGTIME 10   
+#define TRIGTIME 10   //Time to pulse trigger pin to generate sound burst
 #define UD 11     //Up/Down (U/D) (used to control direction of wiper and counter increment/decrement) connected to pin 11 on arduino
 #define CS 7      //Chip select connected to pin 7 on arduino
 #define INC 9     //Increment (INC) connected to pin 9 on arduino
@@ -9,10 +9,9 @@
 #define TIL 5     //Time to wait after setting INC to low voltage
 #define TIH 5     //time to wait after setting INC to high voltage
 #define BUZZER 13   //Buzzer is connected to pin 13
-#define NOTELENGTH 250  
-#define NUMSENSORS 2
-#define TRIG 3
-#define ECHO 5
+#define NOTELENGTH 250  //How long tone plays for
+#define TRIG 3    //Trigger pin set to 3
+#define ECHO 5    //Echo pin set to 5
 char count = 0;   //current volume
 
 //used to set volume controlled by digital potentiometer
