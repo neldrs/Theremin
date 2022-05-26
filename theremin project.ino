@@ -97,7 +97,7 @@ void loop() {
   int pitch;
   int dist;
   
-  int vw = 0;
+  int vw;
   float current = 0.0005;
   float resistance;
   float vwConvert;
@@ -105,25 +105,28 @@ void loop() {
   dist = calcDist(TRIG, ECHO);
   //won't set volume or tone if sensor distance is greater than cutoff distance
   if (dist <= CUTOFFDIST){
-    vol = map(dist, 0, CUTOFFDIST, 25, 31);
+    vol = map(dist, 0, CUTOFFDIST, 20, 31);
     pitch = map(dist, 0, CUTOFFDIST, 31, 4978);
     setCount(vol);
+    delayMicroseconds(250);
     tone(BUZZER, pitch);
     
     vw = analogRead(VW);      //not reading 0-1023 as expected, mostly values between 7-371
     //vwConvert = vw / 1024.0 * 5.0;
     //resistance = vw / current;
 
+
     Serial.print("vol ");
     Serial.println(vol, DEC);
     //Serial.print("pitch ");
     //Serial.println(pitch, DEC);
-    if (vw > 0){      //filter out 0 voltage results
+    //if (vw > 0){      //filter out 0 voltage results
     Serial.print("Voltage ");
     Serial.println(vw, DEC);
+    
    //Serial.print("Resistance ");
    //Serial.println(resistance);
-    }
+   // }
 
 
   }
