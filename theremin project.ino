@@ -1,6 +1,6 @@
-#define USPERCM 29        //speed of sound in microseconds to centimeters
-#define CUTOFFDIST 26   //max distance ultrasonic sensor will read is 26cm
-#define TRIGTIME 10   //Time to pulse trigger pin to generate sound burst
+#define USPERCM 29       //speed of sound in microseconds to centimeters
+#define CUTOFFDIST 35   //max distance ultrasonic sensor will read is 35cm
+#define TRIGTIME 10      //Time to pulse trigger pin to generate sound burst
 #define UD 11     //Up/Down (U/D) (used to control direction of wiper and counter increment/decrement) connected to pin 11 on arduino
 #define CS 7      //Chip select connected to pin 7 on arduino
 #define INC 9     //Increment (INC) connected to pin 9 on arduino
@@ -8,7 +8,7 @@
 #define TDI 10    //Time to wait after setting U/D voltage to high to toggle INC
 #define TIL 5     //Time to wait after setting INC to low voltage
 #define TIH 5     //time to wait after setting INC to high voltage
-#define BUZZER 13   //Buzzer is connected to pin 13
+#define BUZZER 12    //Buzzer is connected to pin 12
 #define NOTELENGTH 250  //How long tone plays for
 #define TRIG 3    //Trigger pin set to 3
 #define ECHO 5    //Echo pin set to 5
@@ -29,9 +29,9 @@ char setCount(char c){
       count++;                            //increases count by 1 (used to track current volume)
       }
     }
-  if (count > c){               //same thing but opposite l0l
+  if (count > c){               //checks if current volume is higher than the volume we want, if true:
     digitalWrite(UD, LOW);      //sets U/D to LOW voltage, this allows us to decrease volume when we pulse INC
-    delayMicroseconds(TDI);
+    delayMicroseconds(TDI);     //starts pulsing INC after delay
     while(count > c){
       digitalWrite(INC, LOW);   
       delayMicroseconds(TIL);
@@ -74,7 +74,7 @@ void setup() {
 
   digitalWrite(UD, LOW);    //preparing to pulse INC in loop, to bring down volume
   delayMicroseconds(TDI);   //waits 5 microseconds (time needed to wait before using INC)
-  for(int i = 0; i < 100; i++){   //loops 100 times
+  for(int i = 0; i < 100; i++){   //loops 100 times to ensure volume starts at 0
     digitalWrite(INC, LOW); 
     delayMicroseconds(TIL);
     digitalWrite(INC, HIGH);
@@ -84,7 +84,6 @@ void setup() {
   //ultrasonic sensor setup
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
-
 
   //buzzer setup
   pinMode(BUZZER, OUTPUT);    //sets buzzer pin as an OUTPUT which allows us to use the arduino to control voltage
@@ -97,41 +96,16 @@ void loop() {
   int pitch;
   int dist;
   
-  int vw;
-  float current = 0.0005;
-  float resistance;
-  float vwConvert;
- 
   dist = calcDist(TRIG, ECHO);
-  //won't set volume or tone if sensor distance is greater than cutoff distance
+
+  //won't set volume or tone if sensor distance is greater than cutoff distance 
   if (dist <= CUTOFFDIST){
-    vol = map(dist, 0, CUTOFFDIST, 20, 31);
+    vol = map(dist, 0, CUTOFFDIST, 20, 31);  //max 31
     pitch = map(dist, 0, CUTOFFDIST, 31, 4978);
     setCount(vol);
     delayMicroseconds(250);
     tone(BUZZER, pitch);
-    
-    vw = analogRead(VW);      //not reading 0-1023 as expected, mostly values between 7-371
-    //vwConvert = vw / 1024.0 * 5.0;
-    //resistance = vw / current;
-
-
-    Serial.print("vol ");
-    Serial.println(vol, DEC);
-    //Serial.print("pitch ");
-    //Serial.println(pitch, DEC);
-    //if (vw > 0){      //filter out 0 voltage results
-    Serial.print("Voltage ");
-    Serial.println(vw, DEC);
-    
-   //Serial.print("Resistance ");
-   //Serial.println(resistance);
-   // }
-
 
   }
-
-
-
 
 }
