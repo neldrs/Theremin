@@ -103,7 +103,6 @@ void loop() {
     vol = map(dist, 0, CUTOFFDIST, 20, 31);  //max 31
     pitch = map(dist, 0, CUTOFFDIST, 31, 4978);
     setCount(vol);
-    delayMicroseconds(250);
     tone(BUZZER, pitch);
 
   }
